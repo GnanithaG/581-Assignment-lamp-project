@@ -1,0 +1,35 @@
+version: '3'
+
+services:
+  web:
+    image: php:7.4-apache
+    ports:
+      - "8080:80"
+    volumes:
+      - ./www:/var/www/html
+    networks:
+      - lamp-network
+
+  db:
+    image: mysql:5.7
+    environment:
+      MYSQL_ROOT_PASSWORD: root_password
+      MYSQL_DATABASE: lamp_db
+      MYSQL_USER: lamp_user
+      MYSQL_PASSWORD: lamp_password
+    volumes:
+      - ./mysql:/var/lib/mysql
+    networks:
+      - lamp-network
+
+  admin:
+    image: phpmyadmin/phpmyadmin
+    ports:
+      - "8081:80"
+    environment:
+      PMA_HOST: db
+    networks:
+      - lamp-network
+
+networks:
+  lamp-network:
